@@ -4,11 +4,7 @@ secrets/
 *.json.key
 service-account*.json
 
-# Data & logs
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+# Logs
 logs/*
 !logs/.gitkeep
 
@@ -22,3 +18,6 @@ venv/
 # OS/editor
 .DS_Store
 .vscode/
+.idea/
+
+*.pdf

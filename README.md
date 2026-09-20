@@ -4,16 +4,6 @@ Pipeline thu thập dữ liệu video & comment của top 100 nghệ sĩ US/UK (
 
 ## Kiến trúc
 
-```
-YouTube Data API v3
-        │  (etl/extract/*.py — có retry/backoff)
-        ▼
-  raw_dataset (BigQuery)
-        │  
-        ▼
-  processed_dataset (BigQuery)
-```
-
 - **Extract** (`etl/extract/`): gọi YouTube Data API (channels, videos, comments), tự động retry khi gặp lỗi mạng/lỗi 5xx.
 - **Load raw** (`etl/load.py`): nạp JSON thô vào `raw_dataset`.
 - **Transform** (`etl/transform.py` + `sql/*.sql`): chạy câu lệnh `MERGE` trong BigQuery để upsert từ raw sang `processed_dataset` — video/comment đã tồn tại thì cập nhật (view/like count mới...), chưa có thì thêm mới.

@@ -50,3 +50,19 @@ python main.py
 
 Log ghi vào `logs/pipeline.log`.
 
+## Lên lịch tự động (cron, trên VM)
+
+Trên VM, sau khi đã `git clone` repo và tạo `.venv` ngay trong thư mục repo (khớp với đường dẫn `run_pipeline.sh` dùng), cấp quyền chạy cho script:
+
+```bash
+chmod +x run_pipeline.sh
+```
+
+Thêm vào crontab (`crontab -e`), chạy 07:00 và 23:00 mỗi ngày:
+
+```cron
+0 7 * * *  /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
+0 23 * * * /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
+```
+
+`run_pipeline.sh` tự dùng đường dẫn tuyệt đối (không phụ thuộc CWD lúc cron kích hoạt) và dùng `flock` để tự bỏ qua nếu lần chạy trước (thường mất nhiều giờ) vẫn chưa xong — tránh 2 lần chạy chồng lên nhau gọi trùng API/ghi BigQuery cùng lúc. Lần bị bỏ qua sẽ được ghi vào `logs/cron.log`.

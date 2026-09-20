@@ -1,0 +1,49 @@
+[
+  {"name": "id", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "channel_id", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "artist_name", "type": "STRING", "mode": "NULLABLE"},
+  {
+    "name": "snippet",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {"name": "title", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "description", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "publishedAt", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "channelTitle", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "tags", "type": "STRING", "mode": "REPEATED"},
+      {"name": "categoryId", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "liveBroadcastContent", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "defaultLanguage", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "defaultAudioLanguage", "type": "STRING", "mode": "NULLABLE"}
+    ]
+  },
+  {
+    "name": "contentDetails",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {"name": "duration", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "dimension", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "definition", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "caption", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "licensedContent", "type": "BOOLEAN", "mode": "NULLABLE"},
+      {"name": "projection", "type": "STRING", "mode": "NULLABLE"}
+    ]
+  },
+  {
+    "name": "statistics",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {"name": "viewCount", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "likeCount", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "dislikeCount", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "favoriteCount", "type": "STRING", "mode": "NULLABLE"},
+      {"name": "commentCount", "type": "STRING", "mode": "NULLABLE"}
+    ]
+  },
+  {"name": "source", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "extracted_at", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "ingestion_date", "type": "STRING", "mode": "NULLABLE"}
+]

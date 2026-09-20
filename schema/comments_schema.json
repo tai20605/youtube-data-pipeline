@@ -1,0 +1,39 @@
+[
+  {"name": "id", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "video_id", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "channel_id", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "artist_name", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "parent_id", "type": "STRING", "mode": "NULLABLE"},
+  {
+    "name": "snippet",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {"name": "totalReplyCount", "type": "INTEGER", "mode": "NULLABLE"},
+      {
+        "name": "topLevelComment",
+        "type": "RECORD",
+        "mode": "NULLABLE",
+        "fields": [
+          {"name": "id", "type": "STRING", "mode": "NULLABLE"},
+          {
+            "name": "snippet",
+            "type": "RECORD",
+            "mode": "NULLABLE",
+            "fields": [
+              {"name": "textDisplay", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "textOriginal", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "authorDisplayName", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "authorChannelUrl", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "likeCount", "type": "INTEGER", "mode": "NULLABLE"},
+              {"name": "publishedAt", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "updatedAt", "type": "STRING", "mode": "NULLABLE"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {"name": "extracted_at", "type": "STRING", "mode": "NULLABLE"},
+  {"name": "ingestion_date", "type": "STRING", "mode": "NULLABLE"}
+]

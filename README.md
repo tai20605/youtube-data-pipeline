@@ -64,4 +64,3 @@ Thêm vào crontab (`crontab -e`), chạy 07:00 và 23:00 mỗi ngày:
 0 7 * * *  /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
 0 23 * * * /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
 ```
-

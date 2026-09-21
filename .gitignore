@@ -12,7 +12,7 @@ logs/*
 # Python
 __pycache__/
 *.pyc
-.venv/
+.venv
 venv/
 *.egg-info/
 

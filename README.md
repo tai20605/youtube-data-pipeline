@@ -58,9 +58,11 @@ Trên VM, sau khi đã `git clone` repo và tạo `.venv` ngay trong thư mục 
 chmod +x run_pipeline.sh
 ```
 
-Thêm vào crontab (`crontab -e`), chạy 07:00 và 23:00 mỗi ngày:
+Thêm vào crontab, chạy 07:00 và 23:00 mỗi ngày:
 
 ```cron
-0 7 * * *  /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
-0 23 * * * /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
+crontab - <<'EOF'
+0 7 * * *  /home/taifcojob/youtube-data-pipeline/run_pipeline.sh >> /home/taifcojob/youtube-data-pipeline/logs/cron.log 2>&1
+0 23 * * * /home/taifcojob/youtube-data-pipeline/run_pipeline.sh >> /home/taifcojob/youtube-data-pipeline/logs/cron.log 2>&1
+EOF
 ```

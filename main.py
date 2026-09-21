@@ -1,7 +1,7 @@
 from etl.extract.channels import get_all_channels_info
 from etl.extract.videos import get_all_infomation
 from etl.extract.comments import get_all_comments_for_videos
-from etl.load import load_to_bigquery
+from etl.load import load_to_bigquery, get_last_published_by_channel
 from etl.transform import run_all_transforms
 from etl.utils import get_env_variable, setup_logger
 
@@ -14,8 +14,10 @@ def main():
     logger.info("Step 1/4: Fetching channel info...")
     channels_info = get_all_channels_info()
 
-    logger.info("Step 2/4: Fetching videos...")
-    raw_videos = get_all_infomation(channels_info)
+    logger.info("Step 2/4: Fetching new videos...")
+    last_published = get_last_published_by_channel(raw_dataset)
+    raw_videos = get_all_infomation(channels_info, last_published)
+    logger.info(f"Found {len(raw_videos)} new videos in total.")
     load_to_bigquery(raw_videos, raw_dataset, "videos")
 
     logger.info("Step 3/4: Fetching comments...")

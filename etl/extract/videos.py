@@ -2,7 +2,7 @@ from etl.utils import setup_logger, get_env_variable, load_json, get_channel_id,
 
 logger = setup_logger("extract_videos")
 
-def get_video_ids_from_playlist(playlist_id):
+def get_video_ids_from_playlist(playlist_id, since=None):
     api_key = get_env_variable("YOUTUBE_API_KEY")
     url = "https://www.googleapis.com/youtube/v3/playlistItems"
     video_ids = []
@@ -24,12 +24,19 @@ def get_video_ids_from_playlist(playlist_id):
             break
         if response.status_code == 200:
             data = response.json()
+            reached_known = False
             for item in data.get("items", []):
-                video_id = item.get("contentDetails", {}).get("videoId")
+                details = item.get("contentDetails", {})
+                published_at = details.get("videoPublishedAt")
+                # Uploads playlist is newest-first: once we hit a video we already have, everything after it is old
+                if since and published_at and published_at <= since:
+                    reached_known = True
+                    break
+                video_id = details.get("videoId")
                 if video_id:
                     video_ids.append(video_id)
             next_page_token = data.get("nextPageToken")
-            if not next_page_token:
+            if reached_known or not next_page_token:
                 break
         else:
             logger.error(f"Error {response.status_code} for playlist {playlist_id}: {response.text}")
@@ -63,15 +70,18 @@ def get_video_details(video_ids):
     return video_details
 
 
-def get_all_infomation(channels_info):
+def get_all_infomation(channels_info, last_published=None):
     all_videos = []
+    last_published = last_published or {}
     curr_extracted_at = get_extracted_at()
     curr_ingest_date = get_ingest_date()
 
     for channel in channels_info:
         playlist_id = channel.get("uploads_playlist_id")
-        video_ids = get_video_ids_from_playlist(playlist_id)
+        since = last_published.get(channel.get("channel_id"))
+        video_ids = get_video_ids_from_playlist(playlist_id, since)
         video_details = get_video_details(video_ids)
+        logger.info(f"{channel.get('artist_name')}: {len(video_details)} new videos")
 
         for video in video_details:
             video["channel_id"] = channel.get("channel_id")

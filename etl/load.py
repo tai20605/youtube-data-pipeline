@@ -1,3 +1,4 @@
+from google.api_core.exceptions import NotFound
 from google.cloud import bigquery
 from etl.utils import get_env_variable, setup_logger, BASE_DIR
 
@@ -7,6 +8,25 @@ logger = setup_logger("load")
 def get_bq_client():
     project_id = get_env_variable("GCP_PROJECT_ID")
     return bigquery.Client(project=project_id)
+
+
+def get_last_published_by_channel(dataset, table_name="videos"):
+    client = None
+    try:
+        client = get_bq_client()
+        sql = f"""
+            SELECT channel_id, MAX(snippet.publishedAt) AS last_published
+            FROM `{client.project}.{dataset}.{table_name}`
+            WHERE channel_id IS NOT NULL
+            GROUP BY channel_id
+        """
+        return {row.channel_id: row.last_published for row in client.query(sql).result()}
+    except NotFound:
+        logger.warning(f"Table {dataset}.{table_name} not found, treating as first run (fetch everything).")
+        return {}
+    finally:
+        if client:
+            client.close()
 
 
 def load_to_bigquery(rows, dataset, table_name, write_disposition="WRITE_APPEND"):

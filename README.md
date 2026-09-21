@@ -1,6 +1,6 @@
 # YouTube Data Pipeline
 
-Pipeline thu thập dữ liệu video & comment của top 100 nghệ sĩ US/UK (xếp hạng theo Billboard Hot 100 / UK Official Singles Chart) từ YouTube Data API v3, nạp vào BigQuery và xử lý theo mô hình **ELT**.
+Pipeline thu thập dữ liệu video & comment của top 100 nghệ sĩ US/UK từ YouTube Data API v3, nạp vào BigQuery và xử lý theo mô hình **ELT**.
 
 ## Kiến trúc
 
@@ -52,7 +52,7 @@ Log ghi vào `logs/pipeline.log`.
 
 ## Lên lịch tự động (cron, trên VM)
 
-Trên VM, sau khi đã `git clone` repo và tạo `.venv` ngay trong thư mục repo (khớp với đường dẫn `run_pipeline.sh` dùng), cấp quyền chạy cho script:
+Trên VM, sau khi đã `git clone` repo và tạo `.venv` ngay trong thư mục repo, cấp quyền chạy cho script:
 
 ```bash
 chmod +x run_pipeline.sh
@@ -65,4 +65,3 @@ Thêm vào crontab (`crontab -e`), chạy 07:00 và 23:00 mỗi ngày:
 0 23 * * * /đường/dẫn/tuyệt/đối/tới/youtube-data-pipeline/run_pipeline.sh
 ```
 
-`run_pipeline.sh` tự dùng đường dẫn tuyệt đối (không phụ thuộc CWD lúc cron kích hoạt) và dùng `flock` để tự bỏ qua nếu lần chạy trước (thường mất nhiều giờ) vẫn chưa xong — tránh 2 lần chạy chồng lên nhau gọi trùng API/ghi BigQuery cùng lúc. Lần bị bỏ qua sẽ được ghi vào `logs/cron.log`.
